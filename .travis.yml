@@ -1,0 +1,12 @@
+dist: trusty
+
+jobs:
+  include:
+    - stage: build docker image
+      script:
+      - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+      - docker build -t cibiltech/pipelines-awscli .
+      - docker push cibiltech/pipelines-awscli
+    - stage: test
+      script: docker run --rm cibiltech/pipelines-awscli echo hello
+    - script: docker run --rm cibiltech/pipelines-awscli echo hello
