@@ -1,12 +1,18 @@
 dist: trusty
 
+cron:
+  - branch: master
+    interval: monthly
+    options: always run
+
 jobs:
   include:
     - stage: build docker image
       script:
       - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
       - docker build -t cibiltech/pipelines-awscli .
+      - docker tag cibiltech/pipelines-awscli cibiltech/pipelines-awscli:latest
       - docker push cibiltech/pipelines-awscli
     - stage: test
-      script: docker run --rm cibiltech/pipelines-awscli echo hello
-    - script: docker run --rm cibiltech/pipelines-awscli echo hello
+      script: docker run --rm cibiltech/pipelines-awscli help
+    - script: docker run --rm cibiltech/pipelines-awscli help
